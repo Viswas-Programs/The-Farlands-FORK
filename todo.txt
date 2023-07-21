@@ -1,15 +1,30 @@
 Silver:
+- Item and Block models, Hand model
+- Multiplayer Building/Breaking
+- Better inventory layout 
+(crafting should just be a smaller window next to the backpack)
 - Attack/Break/Build player animations
 - Optimise server
-- Proper lighting for box meshes (i'll make a second shader program for them)
+- Proper lighting for box meshes 
+(i'll make a second shader program for them)
+- Animating blocks 
+(This can all be done in a vertex/fragment shader by messing around with uvs)
+
+-> Optimise Server:
+- Only send messages once a second for each player
+(then use message buffers, this will greatly reduce bandwidth usage, due to the 58 byte per message thing)
+- Only send nearby players
+- Move player data into single array (saves like 10 bytes per message)
+- 
 
 -> Optimise Game:
-- Only using a vertex buffer
 - Capping fps
 - LOD
 - Occlusion Culling
-- Frustum Culling
+- Better Frustum Culling
 
 Overscore:
 - create ore vein generation
 - make different biomes (more tree types, different grasses)
+
+did you know the project is 4220 lines? - 19 Jul 2023
