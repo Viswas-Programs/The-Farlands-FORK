@@ -1,0 +1,15 @@
+Silver:
+- Attack/Break/Build player animations
+- Optimise server
+- Proper lighting for box meshes (i'll make a second shader program for them)
+
+-> Optimise Game:
+- Only using a vertex buffer
+- Capping fps
+- LOD
+- Occlusion Culling
+- Frustum Culling
+
+Overscore:
+- create ore vein generation
+- make different biomes (more tree types, different grasses)

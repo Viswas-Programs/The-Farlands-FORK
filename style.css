@@ -1,0 +1,49 @@
+html, body {
+	height: 100%;
+	margin: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	overflow: hidden;
+}
+
+@font-face {
+  font-family: "font";
+  src: url("assets/font.ttf");
+}
+
+#container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+#username {
+	display: none;
+	margin-bottom: 20px
+}
+
+/* #ui-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+ */
+canvas {
+	position: absolute;
+	margin: 0;
+	padding: 0;
+	/* border-radius: 15px; */
+}
+
+body {
+	width: 100vw;
+	height: 95vh;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background-color: #161616;
+  background-image: url(assets/bg.png);
+}
