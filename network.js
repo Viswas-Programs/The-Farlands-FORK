@@ -1,4 +1,4 @@
-var ws = new WebSocket("wss://the-farlands-server.silverspace505.repl.co")
+var ws = new WebSocket("wss://the-farlands-server-dev.silverspace505.repl.co")
 
 var id = ""
 var queue = []
