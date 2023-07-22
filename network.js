@@ -28,8 +28,17 @@ ws.addEventListener("message", (event) => {
 	}
 	if (msg.data) {
 		for (let player in msg.data) {
-			for (let data in msg.data[player]) {
-				playerData[player][data] = msg.data[player][data]
+			playerData[player] = {
+				x: msg.data[player][0],
+				y: msg.data[player][1],
+				z: msg.data[player][2],
+				rx: msg.data[player][3],
+				ry: msg.data[player][4],
+				hr: msg.data[player][5],
+				c: msg.data[player][6],
+				a: msg.data[player][7],
+				u: msg.data[player][8],
+				p: msg.data[player][9],
 			}
 		}
 	}
@@ -65,7 +74,11 @@ setInterval(() => {
 		sendMsg(queue[0])
 		queue.splice(0, 1)
 	}
-	sendMsg({"data": data})
+	var rawData = []
+	for (let data2 in data) {
+		rawData.push(data[data2])
+	}
+	sendMsg({"data": rawData})
 }, 1000/60)
 
 // setInterval(function () {
