@@ -2,7 +2,8 @@ importScripts("data.js")
 importScripts("https://cdn.jsdelivr.net/npm/noisejs@2.1.0/index.min.js")
 // var seed = Math.random()
 // console.log(seed)
-var noise = new Noise(0.8828556045249678)
+var noise = new Noise(0.885643552331419)
+// 0.8828556045249678 <- the seed where i built the first house
 // 0.6443995276743242 <- the seed where i sent the player model
 
 var chunks = {}

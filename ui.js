@@ -222,6 +222,60 @@ function renderUI() {
 			if (hovered && mouse.down) {
 				chunkLoadSpeed = 1 + Math.round((mouse.x-(80*2-16*4)) / (32*4)*4)
 			}
+
+			var playerNames = {
+				"0,0": "Silver",
+				"1,0": "Camsical",
+			}
+			drawText(10, 10+20+128+128, "Player Skin: "+ playerNames[playerT.join(",")], 18)
+
+			hovered = mouse.x > 10 && mouse.x < 10+12*4 && mouse.y > 10+20+128+128+10 && mouse.y < 10+20+128+128+10+12*4
+			drawButton(10+12*4/2, 10+20+128+128+10+12*4/2, 12*4, 12*4, inventoryImg, 48, 176+16, 16, 16, hovered, clickSlow > 0)
+			if (lClick && hovered) {
+				if (playerT.join(",") == "1,0") {
+					playerT = [0, 0]
+					player.updateTexture(playerT)
+					for (let model of player.model) {
+						model.box.updateBuffers()
+					}
+				}
+			}
+			hovered = mouse.x > 10 && mouse.x < 10+12*4 && mouse.y > 10+20+128+128+10+12*4 && mouse.y < 10+20+128+128+10+12*4+12*4
+			drawButton(10+12*4/2, 10+20+128+128+10+12*4+12*4/2, 12*4, 12*4, inventoryImg, 32, 176+16, 16, 16, hovered, clickSlow > 0)
+			if (lClick && hovered) {
+				if (playerT.join(",") == "0,0") {
+					playerT = [1, 0]
+					player.updateTexture(playerT)
+					for (let model of player.model) {
+						model.box.updateBuffers()
+					}
+				}
+			}
+			// if (hovered) {
+			// 	uictx.drawImage(inventoryImg, 48, 176+16, 16, 16, 10-(12*4*1.1-12*4)/2, 10+20+128+128+10-(12*4*1.1-12*4)/2, 12*4*1.1, 12*4*1.1)
+			// 	uictx.globalAlpha = 0.25
+			// 	uictx.drawImage(inventoryImg, 192, 176, 16, 16, 10-(12*4*1.1-12*4)/2, 10+20+128+128+10-(12*4*1.1-12*4)/2, 12*4*1.1, 12*4*1.1)
+			// 	uictx.globalAlpha = 0.9
+			// } else {
+			// 	uictx.drawImage(inventoryImg, 48, 176+16, 16, 16, 10, 10+20+128+128+10, 12*4, 12*4)
+			// }
+
+			// hovered = mouse.x > 10 && mouse.x < 10+12*4 && mouse.y > 10+20+128+128+10+12*4 && mouse.y < 10+20+128+128+10+12*4+12*4
+			// if (hovered) {
+			// 	if (clickSlow > 0) {
+				
+			// 	}
+			// 	uictx.drawImage(inventoryImg, 32, 176+16, 16, 16, 10-(12*4*1.1-12*4)/2, 10+20+128+128+10+12*4-(12*4*1.1-12*4)/2, 12*4*1.1, 12*4*1.1)
+			// 	uictx.globalAlpha = 0.25
+			// 	uictx.drawImage(inventoryImg, 192, 176, 16, 16, 10-(12*4*1.1-12*4)/2, 10+20+128+128+10+12*4-(12*4*1.1-12*4)/2, 12*4*1.1, 12*4*1.1)
+			// 	uictx.globalAlpha = 0.9
+			// } else {
+			// 	uictx.drawImage(inventoryImg, 32, 176+16, 16, 16, 10, 10+20+128+128+10+12*4, 12*4, 12*4)
+			// }
+			
+			uictx.drawImage(playerImg, 32+playerT[0]*48, 0, 8, 8, 10+12*4+5, 10+20+128+128+10, 24*4, 24*4)
+
+			drawText(10, 30+256+24*4+18*2, "*You can see yourself by pressing P*", 14)
 			
 			// uictx.drawImage(inventoryImg, 16*7, 176+16, 32, 16, 88*2-32*3, 10+16, 32*4, 16*4)
 			// if (hovered) {
@@ -358,6 +412,21 @@ function renderUI() {
 			uictx.strokeText(`${selectedItem[1]}`, mouse.x+32-w/2/1.5, mouse.y+40-h/2/1.5/2)
 			uictx.fillText(`${selectedItem[1]}`, mouse.x+32-w/2/1.5, mouse.y+40-h/2/1.5/2)
 		}
+	}
+}
+
+function drawButton(x, y, w, h, img, srcX, srcY, srcW, srcH, hovered, clicked) {
+	if (clicked && hovered) {
+		w /= 1.5
+		h /= 1.5
+	}
+	if (hovered) {
+		uictx.drawImage(img, srcX, srcY, srcW, srcH, x-w*1.1/2, y-h*1.1/2, w*1.1, h*1.1)
+		uictx.globalAlpha = 0.25
+		uictx.drawImage(inventoryImg, 192, 176, 16, 16, x-w*1.1/2, y-h*1.1/2, w*1.1, h*1.1)
+		uictx.globalAlpha = 0.9
+	} else {
+		uictx.drawImage(img, srcX, srcY, srcW, srcH, x-w/2, y-h/2, w, h)
 	}
 }
 

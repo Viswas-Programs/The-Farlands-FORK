@@ -101,10 +101,33 @@ var inventoryImg = new Image()
 inventoryImg.src = "assets/inventory.png"
 var itemsImg = new Image()
 itemsImg.src = "assets/items.png"
+var playerImg = new Image()
+playerImg.src = "assets/players.png"
+
+// saving data stuff
+var lastPlayerT = [-1, -1]
+var lastRenderSize = {x: 0, y: 0, z: 0}
+var lastChunkLoadSpeed = 0
 
 // variables
 var collide = []
 var meshes = []
+
+// loading save data
+var playerTLoaded = localStorage.getItem("playerT")
+if (playerTLoaded) {
+	playerT = playerTLoaded.split(",")
+	playerT = [parseInt(playerT[0]), parseInt(playerT[1])]
+	player.updateTexture(playerT)
+} 
+var renderSizeLoaded = localStorage.getItem("renderSize")
+if (renderSizeLoaded) {
+	renderSize = JSON.parse(renderSizeLoaded)
+} 
+var chunkLoadSpeedLoaded = localStorage.getItem("chunkLoadSpeed")
+if (chunkLoadSpeedLoaded) {
+	chunkLoadSpeed = chunkLoadSpeedLoaded
+} 
 
 function isCollidingWorld(object) {
 	var round = {x: Math.round(object.pos.x-0.5), y: Math.round(object.pos.y-0.5), z: Math.round(object.pos.z-0.5)}
@@ -237,7 +260,7 @@ function render(timestamp) {
 	if (selectedItem[0] == "none") {
 		safeInventory = copyInventory()
 	}
-	
+
 	requestAnimationFrame(render)
 	time = Date.now()/1000
 	var oldPos = {...player.pos}
@@ -547,6 +570,21 @@ function render(timestamp) {
 	gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA, gl.ONE, gl.ONE_MINUS_SRC_ALPHA)
 	mat4.perspective(projection, 60 * Math.PI/180, gl.canvas.width / gl.canvas.height, 0.01, 1000)
 
+	if (playerT.join(",") != lastPlayerT.join(",")) {
+		localStorage.setItem("playerT", playerT)
+	}
+	lastPlayerT = [...playerT]
+
+	if (JSON.stringify(renderSize) != JSON.stringify(lastRenderSize)) {
+		localStorage.setItem("renderSize", JSON.stringify(renderSize))
+	}
+	lastRenderSize = {...renderSize}
+
+	if (chunkLoadSpeed != lastChunkLoadSpeed) {
+		localStorage.setItem("chunkLoadSpeed", chunkLoadSpeed)
+	}
+	lastChunkLoadSpeed = chunkLoadSpeed
+	
 	webgl.render()
 
   renderUI()

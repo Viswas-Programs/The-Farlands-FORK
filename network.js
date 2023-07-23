@@ -1,4 +1,4 @@
-var ws = new WebSocket("wss://the-farlands-server-dev.silverspace505.repl.co")
+var ws = new WebSocket("wss://silver-main.glitch.me")
 
 var id = ""
 var queue = []
@@ -65,7 +65,7 @@ ws.addEventListener("message", (event) => {
 
 ws.addEventListener("close", (event) => {
 	console.log("Disconnected from server")
-	location.reload()
+	// location.reload()
 })
 
 setInterval(() => {
