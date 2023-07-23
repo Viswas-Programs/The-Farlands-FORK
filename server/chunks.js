@@ -418,7 +418,7 @@ function generateChunk(xOff, yOff, zOff) {
 				
 				function getGen(x2, y2, z2) {
 					var spikes = false
-					var n5 = (noise.perlin2((x2+20482)/(500*gSpread), (z2+08293)/(500*gSpread))+1)/2
+					var n5 = (noise.perlin2((x2+20482)/(500*gSpread), (z2+98293)/(500*gSpread))+1)/2
 					if (n5 > 0.49 && n5 < 0.51) {
 						spikes = true
 					}
@@ -541,7 +541,7 @@ function generateChunk(xOff, yOff, zOff) {
 				function stoneGen(x2, y2, z2) {
 					if (noise.perlin3((x2+85284)/5, (y2+75928)/5, (z2+48502)/5) > 0.5) {
 						chunk.push(10)
-					} else if (noise.perlin3((x2+83562)/4, (y2+02386)/4, (z2+97255)/4) > 0.550) {
+					} else if (noise.perlin3((x2+83562)/4, (y2+32386)/4, (z2+97255)/4) > 0.550) {
 						chunk.push(11)
           } else if (noise.perlin3((x2+32567)/4, (y2+23968)/4, (z2+24797)/4) > 0.675 && y2 <= 20) {
 						chunk.push(12)
