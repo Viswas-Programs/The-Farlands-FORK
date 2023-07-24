@@ -41,6 +41,7 @@ var blocks = {
 	/*39*/ "ironBlock": [[6, 4], [6, 4], [6, 4], [6, 4], [6, 4], [6, 4], true, "ironBlock"],
 	/*40*/ "goldBlock": [[6, 3], [6, 3], [6, 3], [6, 3], [6, 3], [6, 3], true, "goldBlock"],
 	/*41*/ "diamondBlock": [[6, 2], [6, 2], [6, 2], [6, 2], [6, 2], [6, 2], true, "diamondBlock"],
+	/*42*/ "crackedStoneBricks": [[6, 1], [6, 1], [6, 1], [6, 1], [6, 1], [6, 1], true, "crackedStoneBricks"],
 	}
 	var itemData = {
 		"none": [[], false, 0],
@@ -62,6 +63,7 @@ var blocks = {
 		"goldOre": [[2, 3], true, 12],
 		"diamondOre": [[3, 3], true, 13],
 		"stoneBricks": [[4, 2], true, 38],
+		"crackedStoneBricks": [[4, 3], true, 42],
 		"water": [[0, 2], true, 6],
 		"lava": [[1, 2], true, 14],
 		"brick": [[0, 5], false, 0],
@@ -88,6 +90,7 @@ var blocks = {
 		[["ironBlock", 1], [["iron", 10]]],
 		[["goldBlock", 1], [["gold", 10]]],
 		[["diamondBlock", 1], [["diamond", 10]]],
+		[["crackedStoneBricks", 1], [["stoneBricks", 1]]],
 	]
 	// Blocks with no collision
 	var none = [0, 6, 14]
@@ -350,6 +353,9 @@ var blocks = {
 	
 			
 		} else if (structure == "dungeon") {
+	
+	
+			
 			var no = ["0,0", "6,6", "0,6", "6,0"]
 			for (let x = 0; x < 7; x++) {
 				for (let z = 0; z < 7; z++) {
@@ -374,7 +380,8 @@ var blocks = {
 						for (let z = 0; z < depth; z++) {
 							if (x == 0 || y == 0 || z == 0 ||
 							x == width-1 || y == height-1 || z == depth-1) {
-								sets.push([rx-Math.floor(width/2)+x, ry-Math.floor(height/2)+y, rz-Math.floor(depth/2)+z, 38])
+								let b = srandom(rx*x*ry*y*rz*z*483) > 0.9 ? 42 : 38
+								sets.push([rx-Math.floor(width/2)+x, ry-Math.floor(height/2)+y, rz-Math.floor(depth/2)+z, b])
 							}
 						}
 					}
@@ -383,7 +390,7 @@ var blocks = {
 			var limit = 0
 			var maxLimit = 10
 			var generated = []
-			var roomPos = [0, 0]
+			var roomPos = [0, 0, 0]
 			function generateRoom2(x, y, z) {
 				var og =  [...roomPos]
 				generated.push([...roomPos].join(","))
@@ -391,7 +398,7 @@ var blocks = {
 					return
 				}
 				limit += 1
-				var side = Math.floor(srandom(rx*x*ry*y*rz*z*(limit+1))*4)
+				var side = Math.floor(srandom(rx*x*ry*y*rz*z*(limit+1))*5)
 				if (side == 0 && limit < maxLimit) {
 					roomPos[0] += 1
 					generateRoom(x+4, y-1, z, 3, 3, 3)
@@ -408,43 +415,70 @@ var blocks = {
 					roomPos[1] -= 1
 					generateRoom(x, y-1, z-4, 3, 3, 3)
 				}
+				if (side == 4 && limit < maxLimit) {
+					roomPos[2] -= 1
+					generateRoom(x, y-4, z, 3, 3, 3)
+				}
 				generateRoom(x, y, z, 5, 5, 5)
-				var trap = Math.floor(srandom(rx*x*ry*y*rz*z*(limit+1)*2)*3)
-				if (trap == 1 && limit < maxLimit) {
+				var trap = Math.floor(srandom(rx*x*ry*y*rz*z*(limit+1)*2)*5)
+				if (side == 4) { trap = 0 }
+				if (trap == 1 && limit < maxLimit-1) {
 					for (let x2 = 0; x2 < 3; x2++) {
 						for (let z2 = 0; z2 < 3; z2++) {
 							sets.push([x-1+x2, y-3, z-1+z2, 14])
-							sets.push([x-1+x2, y-4, z-1+z2, 38])
+							let b = srandom(x2*x*y*z2*z*923) > 0.9 ? 42 : 38
+							sets.push([x-1+x2, y-4, z-1+z2, b])
 						}
 					}
 				}
-				// if (trap == 2 && limit < maxLimit) {
-				// 	sets.push([x, y-2, z, 38])
-				// 	sets.push([x, y-1, z, 38])
-				// 	sets.push([x, y, z, 38])
-				// 	sets.push([x, y+1, z, 38])
-				// 	sets.push([x, y+2, z, 38])
-				// }
-				if (trap == 2 && limit < maxLimit) {
+				if (trap == 2 && limit < maxLimit-1) {
+					let b = srandom(x*y*z*929) > 0.9 ? 42 : 38
+					sets.push([x, y-2, z, b])
+					b = srandom(x*y*z*372) > 0.9 ? 42 : 38
+					sets.push([x, y-1, z, b])
+					b = srandom(x*y*z*129) > 0.9 ? 42 : 38
+					sets.push([x, y, z, b])
+					b = srandom(x*y*z*738) > 0.9 ? 42 : 38
+					sets.push([x, y+1, z, b])
+					b = srandom(x*y*z*534) > 0.9 ? 42 : 38
+					sets.push([x, y+2, z, b])
+				}
+				if (trap == 3 && limit < maxLimit-1) {
 					for (let x2 = 0; x2 < 5; x2++) {
 						for (let z2 = 0; z2 < 5; z2++) {
 							if (x2 == z2) {
-								for (let y2 = 0; y2 < 3; y2++) {
-									sets.push([x-2+x2, y-2+y2, z-2+z2, 5])
+								for (let y2 = 0; y2 < (x2 == 2 ? 3 : 5); y2++) {
+									let b = srandom(x2*x*y2*y*z2*z*232) > 0.9 ? 42 : 38
+									sets.push([x-2+x2, y-2+y2, z-2+z2, b])
 								}
 							}
 						}
 					}
-					sets.push([x-2, y-2, z-1, 38])
-					sets.push([x+2, y-2, z+1, 38])
-					sets.push([x+1, y-1, z-1, 38])
-					sets.push([x-1, y-1, z+1, 38])
+					sets.push([x-2, y-2, z-1, 8])
+					sets.push([x+2, y-2, z+1, 8])
+					sets.push([x+1, y-1, z-1, 8])
+					sets.push([x-1, y-1, z+1, 8])
+				}
+				if (trap == 4 && limit < maxLimit-1) {
+					for (let x2 = 0; x2 < 3; x2++) {
+						for (let z2 = 0; z2 < 3; z2++) {
+							for (let y2 = 0; y2 < (x2 == 1 && z2 == 1 ? 3 : 5); y2++) {
+								let b = srandom(x2*x*y2*y*z2*z*232) > 0.9 ? 42 : 38
+								sets.push([x-1+x2, y-2+y2, z-1+z2, b])
+							}
+						}
+					}
+					sets.push([x-1, y+1, z, 0])
+					sets.push([x-1, y+2, z, 0])
+					sets.push([x, y+1, z, 40])
 				}
 				doors = [
-					generated.includes([og[0]+1, og[1]].join(",")),
-					generated.includes([og[0]-1, og[1]].join(",")),
-					generated.includes([og[0], og[1]+1].join(",")),
-					generated.includes([og[0], og[1]-1].join(",")),
+					generated.includes([og[0]+1, og[1], og[2]].join(",")),
+					generated.includes([og[0]-1, og[1], og[2]].join(",")),
+					generated.includes([og[0], og[1]+1, og[2]].join(",")),
+					generated.includes([og[0], og[1]-1, og[2]].join(",")),
+					generated.includes([og[0], og[1], og[2]+1].join(",")),
+					generated.includes([og[0], og[1], og[2]-1].join(",")),
 				]
 				if (doors[0]) {
 					for (let y2 = 0; y2 < 3; y2++) {
@@ -471,6 +505,20 @@ var blocks = {
 					for (let y2 = 0; y2 < 3; y2++) {
 						for (let x2 = 0; x2 < 3; x2++) {
 							sets.push([x-1+x2, y-1-1+y2, z-3, 0])
+						}
+					}
+				}
+				if (doors[4]) {
+					for (let x2 = 0; x2 < 3; x2++) {
+						for (let z2 = 0; z2 < 3; z2++) {
+							sets.push([x-1+x2, y+3, z-1+z2, 0])
+						}
+					}
+				}
+				if (doors[5]) {
+					for (let x2 = 0; x2 < 3; x2++) {
+						for (let z2 = 0; z2 < 3; z2++) {
+							sets.push([x-1+x2, y-3, z-1+z2, 0])
 						}
 					}
 				}
@@ -530,6 +578,19 @@ var blocks = {
 					}
 					generateRoom2(x, y, z-8)
 				}
+				if (side == 4) {
+					for (let x2 = 0; x2 < 3; x2++) {
+						for (let z2 = 0; z2 < 3; z2++) {
+							sets.push([x-1+x2, y-3, z-1+z2, 0])
+						}
+					}
+					for (let x2 = 0; x2 < 3; x2++) {
+						for (let z2 = 0; z2 < 3; z2++) {
+							sets.push([x-1+x2, y-5, z-1+z2, 0])
+						}
+					}
+					generateRoom2(x, y-8, z)
+				}
 			}
 	
 			var distance = ry-(waterLevel-10)
@@ -546,7 +607,8 @@ var blocks = {
 					for (let y = 0; y < distance; y++) {
 						if (x == 0 || z == 0 ||
 							x == 5-1 || z == 5-1) {
-							sets.push([rx+x-2, ry-y, rz+z-2, 38])
+							let b = srandom(rx*x*ry*y*rz*z*666) > 0.9 ? 42 : 38
+							sets.push([rx+x-2, ry-y, rz+z-2, b])
 						}
 					}
 				}
@@ -565,7 +627,7 @@ var blocks = {
 	  var state = seed % m
 	
 		state = (a * state + c) % m
-	  return state / m
+	  return Math.abs(state / m)
 	}
 	
 	// var rando = []
